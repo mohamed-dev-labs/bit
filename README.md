@@ -1,7 +1,5 @@
 # Deep Inspire AI Agent Commander (Slime Agent Edition) 🤖🚀 (v5.7)
 
-![Deep Inspire Robots Logo](logo.png)
-
 **Deep Inspire Robots** is a world-class, hybrid AI Agent System. It is powered by the **Slime Agent Commander**, an advanced orchestration layer that manages a specialized fleet of **30+ autonomous robots**.
 
 ---
