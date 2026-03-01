@@ -2,11 +2,13 @@ import blessed from 'blessed';
 import chalk from 'chalk';
 
 export class TUI {
-    constructor() {
+    constructor(config = {}) {
+        this.config = config;
         this.screen = blessed.screen({
             smartCSR: true,
             title: 'DEEP INSPIRE - AI AGENT COMMANDER',
-            fullUnicode: true
+            fullUnicode: true,
+            dockBorders: true
         });
 
         this.initLayout();
@@ -14,111 +16,120 @@ export class TUI {
     }
 
     initLayout() {
-        // Header
+        // Deep Dark Background for the whole screen
+        this.screen.style.bg = '#0d1117';
+
+        // Header - "DEEP INSPIRE" (Blue/Cyan Gradient Look)
         this.header = blessed.box({
             top: 0,
             left: 'center',
             width: '100%',
-            height: 3,
+            height: 5,
             content: '{center}{bold}DEEP INSPIRE{/bold}{/center}',
             tags: true,
             style: {
-                fg: '#66ccff',
+                fg: '#58a6ff', // Light Blue like the image
                 bold: true
             }
         });
 
-        // Sub-Header (Status)
+        // Status Indicators
         this.statusBox = blessed.box({
-            top: 3,
+            top: 5,
             left: 'center',
-            width: '100%',
-            height: 2,
-            content: ' : Agent Status : {green-fg}Active{/green-fg} | : VLS Environment : {green-fg}Running{/green-fg}',
+            width: '80%',
+            height: 3,
+            content: '{white-fg}: Agent Status : {/white-fg}{green-fg}Active{/green-fg}\n{white-fg}: VLS Environment : {/white-fg}{green-fg}Running{/green-fg}',
             tags: true,
             style: { fg: '#ffffff' }
         });
 
-        // Left Panel: Active Bots
+        // Left Panel: Active Bots (Yellow Header)
         this.leftPanel = blessed.list({
-            top: 5,
-            left: 0,
+            top: 8,
+            left: 2,
             width: '25%',
-            height: '70%',
-            label: ' Active Bots ',
+            height: '65%',
+            label: ' {yellow-fg}Active Bots{/yellow-fg} ',
             border: { type: 'line' },
             style: {
-                border: { fg: '#333333' },
-                label: { fg: '#ffff66', bold: true }
+                border: { fg: '#30363d' }, // Dark border
+                label: { bold: true }
             },
             items: [
                 ' {green-fg}✔{/green-fg} Linux Bot',
+                ' {white-fg}→ Execution Shell{/white-fg}',
                 ' {yellow-fg}○{/yellow-fg} Search Bot',
+                ' {white-fg}→ Research Assistant{/white-fg}',
                 ' {yellow-fg}○{/yellow-fg} Browsing Bot',
-                ' {yellow-fg}○{/yellow-fg} Security Bot'
+                ' {white-fg}→ Web Interaction Tool{/white-fg}',
+                ' {yellow-fg}○{/yellow-fg} Security Bot',
+                ' {white-fg}→ Threat Monitor{/white-fg}'
             ],
             tags: true
         });
 
-        // Center Panel: Console/Execution
+        // Center Panel: Console/Execution (Green Header)
         this.consoleBox = blessed.box({
-            top: 5,
-            left: '25%',
-            width: '50%',
-            height: '70%',
-            label: ' Agent Execution ',
+            top: 8,
+            left: '28%',
+            width: '44%',
+            height: '65%',
+            label: ' {green-fg}Agent Execution{/green-fg} ',
             border: { type: 'line' },
             scrollable: true,
             alwaysScroll: true,
             scrollbar: { ch: ' ', inverse: true },
             style: {
-                border: { fg: '#333333' },
-                label: { fg: '#66ff66', bold: true }
+                border: { fg: '#30363d' },
+                label: { bold: true }
             },
-            content: '1. Code Repository Setup\n2. Framework Installation\n3. Task Automation\n4. System Monitoring\n5. Secure Sandbox Execution\n\nInstalling Next.js in VLS...\nFetching installation command...\nExecuting: npx create-next-app@latest .\nNext.js has been successfully installed!\nSetup Complete.',
+            content: '1. Code Repository Setup\n2. Framework Installation\n3. Task Automation\n4. System Monitoring\n5. Secure Sandbox Execution\n\n{green-fg}→ Installing Next.js in VLS...{/green-fg}\nFetching installation command...\n\nExecuting: {bold}npx create-next-app@latest .{/bold}\n\n{green-fg}Next.js has been successfully installed!{/green-fg}\n{green-fg}Setup Complete.{/green-fg}\n█',
             tags: true
         });
 
-        // Right Panel: Tasks
+        // Right Panel: Tasks (Orange/Yellow Header)
         this.rightPanel = blessed.box({
-            top: 5,
-            right: 0,
+            top: 8,
+            right: 2,
             width: '25%',
-            height: '70%',
-            label: ' Tasks ',
+            height: '65%',
+            label: ' {orange-fg}Tasks{/orange-fg} ',
             border: { type: 'line' },
             style: {
-                border: { fg: '#333333' },
-                label: { fg: '#ffcc66', bold: true }
+                border: { fg: '#30363d' },
+                label: { bold: true }
             },
-            content: '{green-fg}✔{/green-fg} Linux Bot\n   Finished: Installed Next.js\n\n{blue-fg}⚙{/blue-fg} Search Bot\n   Analyzing online sources...\n\n{blue-fg}⚙{/blue-fg} Browsing Bot\n   Scraping web pages...',
+            content: '{green-fg}✔{/green-fg} {bold}Linux Bot{/bold}\n   Finished: Installed Next.js\n   in VLS\n   Task Complete\n\n{blue-fg}⚙{/blue-fg} {bold}Search Bot{/bold}\n   Analyzing online sources\n   for latest AI research...\n\n{blue-fg}⚙{/blue-fg} {bold}Browsing Bot{/bold}\n   Scraping web pages for\n   VLS documentation...\n\n{white-fg}○{/white-fg} {bold}Security Bot{/bold}',
             tags: true
         });
 
-        // Bottom Bar (Buttons/Tabs)
+        // Bottom Bar (Buttons/Tabs) - Professional Dark Look
         this.bottomBar = blessed.box({
             bottom: 3,
-            left: 0,
-            width: '100%',
+            left: 2,
+            width: '96%',
             height: 3,
-            content: ' [ Agent ]   [ Models settings ]   [ Skills ] ',
+            content: ' {green-fg}[ Agent ]{/green-fg}   [ Models settings ]   [ Skills ] ',
+            tags: true,
             style: {
-                fg: '#ffffff',
-                bg: '#111111'
+                fg: '#8b949e',
+                bg: '#161b22'
             }
         });
 
         // Input Box
         this.inputBox = blessed.textbox({
             bottom: 0,
-            left: 0,
-            width: '100%',
+            left: 2,
+            width: '96%',
             height: 3,
             label: ' Input command here... ',
             border: { type: 'line' },
             inputOnFocus: true,
             style: {
-                border: { fg: '#333333' }
+                border: { fg: '#30363d' },
+                fg: '#c9d1d9'
             }
         });
 
