@@ -1,0 +1,30 @@
+{
+  "name": "deep-inspire-robots",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "bin": {
+    "deep-inspire": "./src/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Deep Inspire",
+  "license": "MIT",
+  "description": "A powerful Node.js CLI tool with multiple AI agents, search, and browser capabilities.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.74.0",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.13.5",
+    "blessed": "^0.1.81",
+    "chalk": "^5.6.2",
+    "cli-table3": "^0.6.5",
+    "commander": "^14.0.3",
+    "dotenv": "^17.2.4",
+    "google-search-results-nodejs": "^2.1.0",
+    "inquirer": "^13.2.2",
+    "openai": "^6.21.0",
+    "puppeteer": "^24.37.2"
+  }
+}
