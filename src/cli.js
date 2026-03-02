@@ -111,7 +111,11 @@ program
             return;
         }
         const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
-        const gui = new TUI(config);
+        const commander = new AgentCommander(config);
+        ROBOT_DEFINITIONS.forEach(def => {
+            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
+        });
+        const gui = new TUI(config, commander);
         gui.render();
     });
 
