@@ -8,7 +8,8 @@ export class AgentCommander extends BaseAgent {
         this.robots = new Map();
         this.memory = new MemoryManager();
         this.name = "Deep Inspire AI Agent Commander (Slime Agent Edition)";
-        this.version = "V5.6 (The Codex Engine)";
+        this.version = "V5.8 (The Multi-Provider & Vision Edition)";
+        this.contextSkill = "Adaptive Context Learning: Synthesizing long-term mission goals and user preferences from historical interactions (v5.8).";
     }
 
     registerRobot(name, robotInstance) {
@@ -17,6 +18,7 @@ export class AgentCommander extends BaseAgent {
 
     async delegateTask(taskDescription) {
         console.log(chalk.bold.green(`\n[${this.name}] [${this.version}]`));
+        console.log(chalk.gray(`[Commander Skill] ${this.contextSkill}`));
         
         const pastContext = this.memory.recall().slice(-5).map(c => c.task).join(' | ');
         if (pastContext) {
@@ -25,15 +27,15 @@ export class AgentCommander extends BaseAgent {
 
         console.log(chalk.cyan(`[Thinking Architecture] Analyzing Mission: "${taskDescription}"`));
         
-        // Planning for CodexBot Integration
         const planningPrompt = `
         You are the Strategic Commander (Slime Agent).
+        Current Skill: ${this.contextSkill}
         Mission Goal: "${taskDescription}"
         Past Context: ${pastContext}
         Available Sub-Agents: ${Array.from(this.robots.keys()).join(', ')}.
         
-        Goal: If the task is coding-related, use "CodexBot" (3x Power) as the primary executor.
-        CodexBot can call sub-agents like CodeGenerator, ReviewBot, SecurityBot, and ArchitectBot.
+        Goal: If the task is coding-related, use "CodexBot" (3x Power). 
+        If it involves images, use "VisionBot" or "ImageGenBot".
         
         Return a JSON execution plan:
         {
@@ -41,10 +43,10 @@ export class AgentCommander extends BaseAgent {
             {
               "agent": "AgentName", 
               "task": "detailed instruction", 
-              "subAgents": ["AgentName1", "AgentName2"] // Optional, only for CodexBot
+              "subAgents": ["AgentName1", "AgentName2"] // Optional
             }
           ],
-          "reasoning": "Strategic explanation"
+          "reasoning": "Strategic explanation based on current context and skill"
         }
         Return ONLY valid JSON.
         `;
@@ -64,7 +66,6 @@ export class AgentCommander extends BaseAgent {
                 if (robot) {
                     console.log(chalk.magenta(`\n[Orchestration] Deploying ${step.agent} for: ${step.task}`));
                     
-                    // Specialized execution for CodexBot with sub-agents
                     let result;
                     if (step.agent === 'CodexBot' && step.subAgents) {
                         const subRobots = step.subAgents.map(name => this.robots.get(name)).filter(r => r);
@@ -82,7 +83,7 @@ export class AgentCommander extends BaseAgent {
             ${finalResults.join('\n\n')}
             
             Original Mission: ${taskDescription}
-            Ensure the report is structured, factual, and highlights the performance of CodexBot if used.
+            Ensure the report is structured, factual, and reflects the Commander's adaptive learning skill.
             `;
             return await this.chat(synthesisPrompt);
 

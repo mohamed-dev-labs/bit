@@ -1,6 +1,6 @@
 {
   "name": "deep-inspire-robots",
-  "version": "1.0.0",
+  "version": "5.8.0",
   "main": "src/index.js",
   "type": "module",
   "bin": {
@@ -9,10 +9,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "Deep Inspire",
+  "keywords": [
+    "ai",
+    "agents",
+    "commander",
+    "automation",
+    "vision",
+    "multi-provider"
+  ],
+  "author": "Mohamed Dev Labs",
   "license": "MIT",
-  "description": "A powerful Node.js CLI tool with multiple AI agents, search, and browser capabilities.",
+  "description": "A powerful Node.js CLI tool with multiple AI agents, vision, search, and browser capabilities.",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.74.0",
     "@google/generative-ai": "^0.24.1",

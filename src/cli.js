@@ -8,7 +8,6 @@ import path from 'path';
 import { execSync } from 'child_process';
 import { AgentCommander } from './agents/AgentCommander.js';
 import { SpecializedRobot, ROBOT_DEFINITIONS } from './agents/SpecializedRobots.js';
-import { ModelManager } from './utils/ModelManager.js';
 import { WhatsAppBridge } from './tools/WhatsAppBridge.js';
 import { TelegramBridge } from './tools/TelegramBridge.js';
 import { TUI } from './utils/TUI.js';
@@ -18,8 +17,8 @@ const CONFIG_PATH = path.join(process.cwd(), 'config', 'user-config.json');
 
 program
     .name('deep-inspire')
-    .description('Deep Inspire AI Agent Commander (Slime Agent Edition) v5.7')
-    .version('5.7.0');
+    .description('Deep Inspire AI Agent Commander (Slime Agent Edition) v5.8')
+    .version('5.8.0');
 
 async function installROIC() {
     console.log(chalk.yellow('\n[Dependency] Installing ROIC (Deep-Deep Hyper Edition) as a default dependency...'));
@@ -42,35 +41,15 @@ program
     .command('setup')
     .description('Initialize Commander, Local Models, ROIC, and API Keys')
     .action(async () => {
-        console.log(chalk.bold.green('\n--- Deep Inspire Robots v5.7.0 Setup ---'));
+        console.log(chalk.bold.blue('\n--- Deep Inspire Robots v5.8.0 Setup ---'));
         await installROIC();
 
         const answers = await inquirer.prompt([
             {
                 type: 'list',
-                name: 'version',
-                message: 'Select Operation Mode:',
-                choices: [
-                    'Version 1: Baseline (Local First)',
-                    'Version 2: Balanced (Hybrid)',
-                    'Version 3: Advanced (Cloud Intensive)'
-                ],
-            },
-            {
-                type: 'list',
                 name: 'provider',
-                message: 'Select Strategic Cloud Provider:',
-                choices: ['google', 'openai', 'anthropic', 'xai'],
-            },
-            {
-                type: 'input',
-                name: 'model',
-                message: 'Enter Model Name:',
-                default: (ans) => {
-                    if (ans.provider === 'google') return 'gemini-1.5-flash';
-                    if (ans.provider === 'xai') return 'grok-beta';
-                    return 'gpt-4o';
-                },
+                message: 'Select Strategic AI Provider:',
+                choices: ['google', 'openai', 'anthropic', 'xai', 'deepseek', 'openrouter', 'elevenlabs'],
             },
             {
                 type: 'input',
@@ -79,9 +58,21 @@ program
                 default: 'MANUS_DEFAULT'
             },
             {
+                type: 'input',
+                name: 'model',
+                message: 'Enter Model Name (optional):',
+                default: (ans) => {
+                    if (ans.provider === 'google') return 'gemini-1.5-flash';
+                    if (ans.provider === 'xai') return 'grok-beta';
+                    if (ans.provider === 'deepseek') return 'deepseek-chat';
+                    if (ans.provider === 'openrouter') return 'meta-llama/llama-3-70b-instruct';
+                    return 'gpt-4.1-mini';
+                },
+            },
+            {
                 type: 'confirm',
                 name: 'setupLocal',
-                message: 'Would you like to setup local models?',
+                message: 'Would you like to setup local models (Ollama)?',
                 default: false
             }
         ]);

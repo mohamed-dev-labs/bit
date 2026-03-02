@@ -6,7 +6,7 @@ import chalk from 'chalk';
 export class BaseAgent {
     constructor(config) {
         this.config = config;
-        this.provider = config.provider;
+        this.provider = config.provider || 'openai';
         this.model = config.model;
         this.apiKey = config.apiKey;
         this.history = [];
@@ -16,8 +16,12 @@ export class BaseAgent {
     initClient() {
         const { provider, apiKey } = this;
         
-        if (provider === 'openai' || provider === 'xai') {
-            const baseURL = provider === 'xai' ? 'https://api.x.ai/v1' : undefined;
+        if (['openai', 'xai', 'deepseek', 'openrouter'].includes(provider)) {
+            let baseURL = undefined;
+            if (provider === 'xai') baseURL = 'https://api.x.ai/v1';
+            if (provider === 'deepseek') baseURL = 'https://api.deepseek.com';
+            if (provider === 'openrouter') baseURL = 'https://openrouter.ai/api/v1';
+
             this.client = new OpenAI({ 
                 apiKey: apiKey === 'MANUS_DEFAULT' ? process.env.OPENAI_API_KEY : apiKey,
                 baseURL: baseURL
@@ -26,6 +30,9 @@ export class BaseAgent {
             this.client = new GoogleGenerativeAI(apiKey);
         } else if (provider === 'anthropic') {
             this.client = new Anthropic({ apiKey });
+        } else if (provider === 'elevenlabs') {
+            // Voice processing logic
+            this.client = { apiKey };
         }
     }
 
@@ -33,17 +40,22 @@ export class BaseAgent {
         const { provider, model, history } = this;
         
         try {
-            if (provider === 'openai' || provider === 'xai') {
+            if (['openai', 'xai', 'deepseek', 'openrouter'].includes(provider)) {
+                let defaultModel = 'gpt-4.1-mini';
+                if (provider === 'xai') defaultModel = 'grok-beta';
+                if (provider === 'deepseek') defaultModel = 'deepseek-chat';
+                if (provider === 'openrouter') defaultModel = 'meta-llama/llama-3-70b-instruct';
+
                 const response = await this.client.chat.completions.create({
-                    model: model || (provider === 'xai' ? 'grok-beta' : 'gpt-4.1-mini'),
+                    model: model || defaultModel,
                     messages: [...history, { role: 'user', content: message }],
                 });
                 const reply = response.choices[0].message.content;
                 this.history.push({ role: 'user', content: message }, { role: 'assistant', content: reply });
                 return reply;
             } else if (provider === 'google') {
-                const modelName = model.startsWith('models/') ? model : `models/${model}`;
-                const genModel = this.client.getGenerativeModel({ model: modelName || 'models/gemini-1.5-flash' });
+                const modelName = model ? (model.startsWith('models/') ? model : `models/${model}`) : 'models/gemini-1.5-flash';
+                const genModel = this.client.getGenerativeModel({ model: modelName });
                 const result = await genModel.generateContent(message);
                 const reply = result.response.text();
                 this.history.push({ role: 'user', content: message }, { role: 'assistant', content: reply });

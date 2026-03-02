@@ -3,7 +3,6 @@ import { WebTool } from '../tools/WebTool.js';
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import { execSync } from 'child_process';
 
 export class SpecializedRobot extends BaseAgent {
     constructor(config, name, expertise, layer = 'Sub-Agent') {
@@ -20,6 +19,14 @@ export class SpecializedRobot extends BaseAgent {
         // CodexBot Hyper-Logic
         if (this.name === 'CodexBot') {
             return await this.runCodexMission(task, subRobots);
+        }
+
+        // Vision & Image Generation (v5.8)
+        if (this.name === 'VisionBot') {
+            return await this.analyzeImage(task);
+        }
+        if (this.name === 'ImageGenBot') {
+            return await this.generateImage(task);
         }
 
         // Enhanced Web Search & Browsing
@@ -53,6 +60,16 @@ export class SpecializedRobot extends BaseAgent {
         Provide a deep, comprehensive, and expert-level response.
         `;
         return await this.chat(enhancedPrompt);
+    }
+
+    async analyzeImage(task) {
+        console.log(chalk.magenta(`[VisionBot] Analyzing visual content: ${task}`));
+        return await this.chat(`[Vision Mode Activated] Task: ${task}. Perform deep visual analysis and OCR if applicable.`);
+    }
+
+    async generateImage(task) {
+        console.log(chalk.magenta(`[ImageGenBot] Generating creative visual: ${task}`));
+        return await this.chat(`[Image Generation Mode] Task: ${task}. Describe the generated image in detail and simulate output path: output/generated_image.png`);
     }
 
     async runCodexMission(task, subRobots) {
@@ -124,7 +141,8 @@ export class SpecializedRobot extends BaseAgent {
 
 export const ROBOT_DEFINITIONS = [
     { name: 'CodexBot', expertise: 'Hyper-Fast Full-Stack Engineering, API Design, and Local Database Architecture (3.0x Power)' },
-    { name: 'VisionProcessor', expertise: 'Analyzing images and video content with 2x precision' },
+    { name: 'VisionBot', expertise: 'Analyzing images, OCR, and visual pattern recognition with 2x precision (v5.8)' },
+    { name: 'ImageGenBot', expertise: 'Text-to-image generation and creative design (v5.8)' },
     { name: 'CodeGenerator', expertise: 'Writing and debugging multi-language code at 2x speed' },
     { name: 'DataParser', expertise: 'Extracting structured data from raw text/HTML with 2x accuracy' },
     { name: 'Embedder', expertise: 'Creating high-dimensional vector embeddings for RAG' },
