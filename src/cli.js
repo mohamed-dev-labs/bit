@@ -10,10 +10,12 @@ import { AgentCommander } from './agents/AgentCommander.js';
 import { SpecializedRobot, ROBOT_DEFINITIONS } from './agents/SpecializedRobots.js';
 import { WhatsAppBridge } from './tools/WhatsAppBridge.js';
 import { TelegramBridge } from './tools/TelegramBridge.js';
+import { EmailBridge } from './tools/EmailBridge.js';
 import { TUI } from './utils/TUI.js';
 
 const program = new Command();
 const CONFIG_PATH = path.join(process.cwd(), 'config', 'user-config.json');
+const EMAIL_CONFIG_PATH = path.join(process.cwd(), 'config', 'email-config.json');
 
 program
     .name('deep-inspire')
@@ -103,6 +105,41 @@ program
     });
 
 program
+    .command('setup-email')
+    .description('Configure the Email Bridge (Gmail App Password required)')
+    .action(async () => {
+        console.log(chalk.bold.cyan('\n--- Deep Inspire Email Bridge Setup ---'));
+        console.log(chalk.gray('Note: You must enable 2FA and create an "App Password" in your Google Account.'));
+        
+        const answers = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'botEmail',
+                message: 'Enter the Gmail address for the Bot:',
+                validate: (input) => input.includes('@gmail.com') || 'Must be a Gmail address'
+            },
+            {
+                type: 'password',
+                name: 'appPassword',
+                message: 'Enter the Gmail App Password (16 characters):',
+                mask: '*'
+            },
+            {
+                type: 'input',
+                name: 'userEmail',
+                message: 'Enter your personal email (authorized sender):',
+                validate: (input) => input.includes('@') || 'Invalid email address'
+            }
+        ]);
+
+        if (!fs.existsSync(path.dirname(EMAIL_CONFIG_PATH))) {
+            fs.mkdirSync(path.dirname(EMAIL_CONFIG_PATH), { recursive: true });
+        }
+        fs.writeFileSync(EMAIL_CONFIG_PATH, JSON.stringify(answers, null, 2));
+        console.log(chalk.green('\n✅ Email Bridge Configured! Use "deep-inspire email" to start the bridge.'));
+    });
+
+program
     .command('gui')
     .description('Start the Deep Inspire Graphical Terminal Interface (TUI)')
     .action(() => {
@@ -170,6 +207,26 @@ program
         });
         const bridge = new TelegramBridge(commander, token);
         bridge.init();
+    });
+
+program
+    .command('email')
+    .description('Start the Email Bridge')
+    .action(async () => {
+        if (!fs.existsSync(EMAIL_CONFIG_PATH)) {
+            console.log(chalk.red('❌ Error: Email configuration not found. Run "deep-inspire setup-email".'));
+            return;
+        }
+        const emailConfig = JSON.parse(fs.readFileSync(EMAIL_CONFIG_PATH, 'utf-8'));
+        const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
+        
+        const commander = new AgentCommander(config);
+        ROBOT_DEFINITIONS.forEach(def => {
+            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
+        });
+
+        const bridge = new EmailBridge(commander, emailConfig);
+        await bridge.init();
     });
 
 program.parse(process.argv);

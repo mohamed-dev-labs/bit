@@ -28,9 +28,12 @@
     "chalk": "^5.6.2",
     "cli-table3": "^0.6.5",
     "commander": "^14.0.3",
-    "dotenv": "^17.2.4",
+    "dotenv": "^17.3.1",
     "google-search-results-nodejs": "^2.1.0",
+    "imap-simple": "^5.1.0",
     "inquirer": "^13.3.0",
+    "mailparser": "^3.9.3",
+    "nodemailer": "^8.0.1",
     "openai": "^6.21.0",
     "puppeteer": "^24.37.2"
   }
