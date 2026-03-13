@@ -7,7 +7,7 @@ export class AgentCommander extends BaseAgent {
         super(config);
         this.robots = new Map();
         this.memory = new MemoryManager();
-        this.name = "Deep Inspire AI Agent Commander (Slime Agent Edition)";
+        this.name = "BIT AI Agent Commander (Slime Agent Edition)";
         this.version = "V5.8 (The Multi-Provider & Vision Edition)";
         this.contextSkill = "Adaptive Context Learning: Synthesizing long-term mission goals and user preferences from historical interactions (v5.8).";
     }

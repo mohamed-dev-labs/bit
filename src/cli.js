@@ -18,12 +18,12 @@ const CONFIG_PATH = path.join(process.cwd(), 'config', 'user-config.json');
 const EMAIL_CONFIG_PATH = path.join(process.cwd(), 'config', 'email-config.json');
 
 program
-    .name('deep-inspire')
-    .description('Deep Inspire AI Agent Commander (Slime Agent Edition) v5.8')
+    .name('bit')
+    .description('BIT AI Agent Commander (Slime Agent Edition) v5.8')
     .version('5.8.0');
 
 async function installROIC() {
-    console.log(chalk.yellow('\n[Dependency] Installing ROIC (Deep-Deep Hyper Edition) as a default dependency...'));
+    console.log(chalk.yellow('\n[Dependency] Installing ROIC (BIT-Hyper Hyper Edition) as a default dependency...'));
     try {
         const roicPath = path.join(process.cwd(), 'deps', 'roic');
         if (!fs.existsSync(path.dirname(roicPath))) {
@@ -43,7 +43,7 @@ program
     .command('setup')
     .description('Initialize Commander, Local Models, ROIC, and API Keys')
     .action(async () => {
-        console.log(chalk.bold.blue('\n--- Deep Inspire Robots v5.8.0 Setup ---'));
+        console.log(chalk.bold.blue('\n--- BIT Robots v5.8.0 Setup ---'));
         await installROIC();
 
         const answers = await inquirer.prompt([
@@ -101,14 +101,14 @@ program
             fs.mkdirSync(path.dirname(CONFIG_PATH), { recursive: true });
         }
         fs.writeFileSync(CONFIG_PATH, JSON.stringify(answers, null, 2));
-        console.log(chalk.green('\n✅ System Initialized! Use "deep-inspire gui" to start the interface.'));
+        console.log(chalk.green('\n✅ System Initialized! Use "bit gui" to start the interface.'));
     });
 
 program
     .command('setup-email')
     .description('Configure the Email Bridge (Gmail App Password required)')
     .action(async () => {
-        console.log(chalk.bold.cyan('\n--- Deep Inspire Email Bridge Setup ---'));
+        console.log(chalk.bold.cyan('\n--- BIT Email Bridge Setup ---'));
         console.log(chalk.gray('Note: You must enable 2FA and create an "App Password" in your Google Account.'));
         
         const answers = await inquirer.prompt([
@@ -136,15 +136,15 @@ program
             fs.mkdirSync(path.dirname(EMAIL_CONFIG_PATH), { recursive: true });
         }
         fs.writeFileSync(EMAIL_CONFIG_PATH, JSON.stringify(answers, null, 2));
-        console.log(chalk.green('\n✅ Email Bridge Configured! Use "deep-inspire email" to start the bridge.'));
+        console.log(chalk.green('\n✅ Email Bridge Configured! Use "bit email" to start the bridge.'));
     });
 
 program
     .command('gui')
-    .description('Start the Deep Inspire Graphical Terminal Interface (TUI)')
+    .description('Start the BIT Graphical Terminal Interface (TUI)')
     .action(() => {
         if (!fs.existsSync(CONFIG_PATH)) {
-            console.log(chalk.red('❌ Error: Configuration not found. Run "deep-inspire setup".'));
+            console.log(chalk.red('❌ Error: Configuration not found. Run "bit setup".'));
             return;
         }
         const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
@@ -163,7 +163,7 @@ program
     .action(async (taskArray) => {
         const task = taskArray.join(' ');
         if (!fs.existsSync(CONFIG_PATH)) {
-            console.log(chalk.red('❌ Error: Configuration not found. Run "deep-inspire setup".'));
+            console.log(chalk.red('❌ Error: Configuration not found. Run "bit setup".'));
             return;
         }
         const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
@@ -214,7 +214,7 @@ program
     .description('Start the Email Bridge')
     .action(async () => {
         if (!fs.existsSync(EMAIL_CONFIG_PATH)) {
-            console.log(chalk.red('❌ Error: Email configuration not found. Run "deep-inspire setup-email".'));
+            console.log(chalk.red('❌ Error: Email configuration not found. Run "bit setup-email".'));
             return;
         }
         const emailConfig = JSON.parse(fs.readFileSync(EMAIL_CONFIG_PATH, 'utf-8'));

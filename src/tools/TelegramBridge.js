@@ -27,7 +27,7 @@ export class TelegramBridge {
         this.bot = new TelegramBot(this.token, { polling: true });
 
         this.bot.onText(/\/start/, (msg) => {
-            this.bot.sendMessage(msg.chat.id, "🟢 Deep Inspire (Slime Agent) is ONLINE!\n\nI am your Agent Commander. Send me any task, and I will orchestrate my specialized robots.");
+            this.bot.sendMessage(msg.chat.id, "🟢 BIT (Slime Agent) is ONLINE!\n\nI am your Agent Commander. Send me any task, and I will orchestrate my specialized robots.");
         });
 
         this.bot.on('message', async (msg) => {

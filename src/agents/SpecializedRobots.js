@@ -31,7 +31,7 @@ export class SpecializedRobot extends BaseAgent {
 
         // Enhanced Web Search & Browsing
         if (this.name === 'SearchBot' || this.name === 'BrowserBot' || this.name === 'ResearcherBot') {
-            console.log(chalk.blue(`[${this.name}] Activating Deep-Search & Hyper-Browsing...`));
+            console.log(chalk.blue(`[${this.name}] Activating BIT-Search & Hyper-Browsing...`));
             if (task.includes('http')) {
                 const url = task.match(/https?:\/\/[^\s]+/)[0];
                 return await WebTool.browse(url);
@@ -108,7 +108,7 @@ export class SpecializedRobot extends BaseAgent {
     }
 
     async runDevMission(task) {
-        console.log(chalk.yellow(`[DevAssistant] Activating ROIC Deep-Deep Hyper Scan for: ${task}`));
+        console.log(chalk.yellow(`[DevAssistant] Activating ROIC BIT-Hyper Hyper Scan for: ${task}`));
         try {
             const roicResult = `[ROIC Scan ID: ROC-${Math.random().toString(16).slice(2, 10).toUpperCase()}]
 - Analysis Depth: Hyper-Deep (Double Power)

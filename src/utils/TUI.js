@@ -2,7 +2,7 @@ import blessed from 'blessed';
 import chalk from 'chalk';
 
 /**
- * Deep Inspire TUI - Professional AI Agent Commander Interface
+ * BIT TUI - Professional AI Agent Commander Interface
  * Inspired by Open Code (Open Interpreter) and the provided design template.
  */
 export class TUI {

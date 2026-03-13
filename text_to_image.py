@@ -36,4 +36,4 @@ def text_to_image(text_path, output_path):
     print(f"Image saved to {output_path}")
 
 if __name__ == "__main__":
-    text_to_image('/home/ubuntu/deep-inspire-robots/qr_fresh.txt', '/home/ubuntu/deep-inspire-robots/whatsapp_qr.png')
+    text_to_image('/home/ubuntu/bit-robots/qr_fresh.txt', '/home/ubuntu/bit-robots/whatsapp_qr.png')

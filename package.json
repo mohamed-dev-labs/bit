@@ -1,10 +1,10 @@
 {
-  "name": "deep-inspire-robots",
+  "name": "bit-robots",
   "version": "5.8.0",
   "main": "src/index.js",
   "type": "module",
   "bin": {
-    "deep-inspire": "./src/cli.js"
+    "bit": "./src/cli.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 import chalk from 'chalk';
 
 /**
- * Email Bridge for Deep Inspire AI Agent
+ * Email Bridge for BIT AI Agent
  * Handles Inbound (IMAP) and Outbound (SMTP) email communication.
  */
 export class EmailBridge {
@@ -108,19 +108,19 @@ export class EmailBridge {
         });
 
         const mailOptions = {
-            from: `"Deep Inspire Bot" <${this.config.botEmail}>`,
+            from: `"BIT Bot" <${this.config.botEmail}>`,
             to: to,
             subject: `✅ Mission Report: ${originalTask.substring(0, 30)}...`,
             html: `
                 <div style="font-family: sans-serif; color: #333; max-width: 600px; border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
-                    <h2 style="color: #238636;">Deep Inspire AI Agent</h2>
+                    <h2 style="color: #238636;">BIT AI Agent</h2>
                     <hr>
                     <p><strong>Original Mission:</strong> ${originalTask}</p>
                     <div style="background: #f6f8fa; padding: 15px; border-radius: 5px; border-left: 5px solid #58a6ff;">
                         <pre style="white-space: pre-wrap;">${report}</pre>
                     </div>
                     <p style="font-size: 0.8em; color: #888; margin-top: 20px;">
-                        Sent automatically by Deep Inspire Agent Commander v5.8
+                        Sent automatically by BIT Agent Commander v5.8
                     </p>
                 </div>
             `

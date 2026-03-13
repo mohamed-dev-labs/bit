@@ -33,7 +33,7 @@ export class WhatsAppBridge {
 
         this.client.on('qr', (qr) => {
             console.log(chalk.yellow('\n--- ACTION REQUIRED ---'));
-            console.log(chalk.cyan('Scan this QR code with your WhatsApp to link Deep Inspire:'));
+            console.log(chalk.cyan('Scan this QR code with your WhatsApp to link BIT:'));
             qrcode.generate(qr, { small: true });
         });
 
@@ -46,7 +46,7 @@ export class WhatsAppBridge {
                 const task = msg.body.replace(/run deep inspire/i, '').trim();
                 console.log(chalk.magenta(`[WhatsApp] Received Task: ${task}`));
                 
-                msg.reply('🤖 Deep Inspire (Slime Agent) is processing your request...');
+                msg.reply('🤖 BIT (Slime Agent) is processing your request...');
                 try {
                     const result = await this.commander.delegateTask(task);
                     msg.reply(`✅ Mission Report:\n\n${result}`);

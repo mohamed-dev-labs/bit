@@ -1,77 +1,167 @@
-# Deep Inspire AI Agent Commander (Slime Agent Edition) v5.8 🤖🚀
+# 🤖 BIT AI Agent Commander (v5.8.0)
+## نظام القيادة المتكامل للوكلاء الأذكياء - الإصدار الخارق (BIT Hyper Edition)
 
-**Deep Inspire Robots** is a world-class, hybrid AI Agent System. It is powered by the **Slime Agent Commander**, an advanced orchestration layer that manages a specialized fleet of **30+ autonomous robots**.
+أهلاً بك في **BIT AI Agent Commander**، النظام الأكثر تطوراً وقوة في إدارة وتوجيه وكلاء الذكاء الاصطناعي المتعددين. هذا المشروع ليس مجرد أداة CLI عادية، بل هو **بنية تحتية متكاملة** مصممة لتمكين المطورين والمستخدمين المتقدمين من تسخير قوة نماذج اللغة الكبيرة (LLMs) في مهام معقدة، برمجية، وتحليلية بسرعة فائقة ودقة متناهية.
 
----
-
-## 📜 Version History & Roadmap
-
-### 💎 v5.8 - The Multi-Provider & Vision Edition (Current Release)
-- **New Providers**: Added support for **DeepSeek**, **xAI (Grok)**, **ElevenLabs**, and **OpenRouter**.
-- **Vision Capabilities**: Introduced `VisionBot` for image analysis and `ImageGenBot` for creation.
-- **Context Skill**: Commander now synthesizes long-term goals and user preferences via Adaptive Context Learning.
-- **Security Hardening**: Removed hardcoded API keys and enhanced configuration security.
-
-### 💎 v5.7 - The TUI & Skills Edition
-- **Graphical Terminal Interface (TUI)**: A stunning, professional dashboard built directly in the terminal. Use `deep-inspire gui` to experience it.
-- **Dynamic Skills System**: Every robot now has a dynamic skill set that adapts to the mission.
-
-### 💎 v5.6 - The Codex Engine
-- **CodexBot Integration**: Introducing the world's fastest coding agent (3.0x Power).
-- **Full-Stack & Local DB**: Capable of generating production-ready full-stack applications.
-
-### 💎 v5.5 - Hyper-Memory & Workflow Edition
-- **Long-term Memory System**: Persistent memory engine to remember past missions.
-- **Workflow Mapping**: Strategic visualization of mission stages.
-
-### 💎 v1.0 - v5.4 - Foundations & Bridges
-- **30+ Specialized Robots**: Experts in Law, Medicine, Finance, Math, and more.
-- **WhatsApp & Telegram Bridges**: Full accessibility via mobile messaging.
-- **Real-time Web Search**: Headful browsing with Puppeteer.
-- **ROIC Integration**: Automated code performance and security auditing.
+تم إعادة بناء هذا النظام بالكامل تحت هوية **BIT** ليكون أسرع، أخف، وأكثر ذكاءً، مع دمج تقنيات **BIT Hyper Scan** و **BIT-Search** لضمان أفضل النتائج في أقل وقت ممكن.
 
 ---
 
-## 🏗 Graphical Interface (TUI)
-Experience the power of orchestration with our professional visual dashboard:
-1. **Active Bots Panel**: Real-time status of your AI fleet.
-2. **Execution Console**: Watch the "Thinking Architecture" in action.
-3. **Task Tracker**: Monitor the progress of sub-agents.
-4. **Interactive Command Bar**: Switch between Agent mode, Model settings, and Skills.
+## 🚀 نظرة عامة على المشروع
 
-## 🛠 Setup & Installation
+مشروع **BIT** هو نظام قيادة مركزي (Commander) يقوم باستقبال المهام المعقدة من المستخدم، وتحليلها، ثم توزيعها على شبكة من **الروبوتات المتخصصة** (Specialized Robots). كل روبوت في هذا النظام يمتلك "خبرة" محددة وقدرة تشغيلية مضاعفة (تصل إلى 3x في بعض الروبوتات مثل CodexBot).
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/mohamed-dev-labs/deep-inspire-robots-v2.git
-   cd deep-inspire-robots-v2
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Initialize the system**:
-   ```bash
-   npm link
-   deep-inspire setup
-   ```
-   *Follow the prompts to configure your providers (OpenAI, Google, xAI, etc.) and optional Local Models.*
-
-## 🎮 Usage
-- **Launch Graphical UI**: `deep-inspire gui`
-- **Run a Mission**: `deep-inspire run "Your complex task here"`
-- **Start WhatsApp**: `deep-inspire whatsapp`
-- **Start Telegram**: `deep-inspire telegram`
-
-## 🤖 The Commander's Fleet
-- **CodexBot**: Full-stack architecture & rapid coding.
-- **VisionBot**: Multi-modal image analysis.
-- **ImageGenBot**: Creative asset generation.
-- **ResearcherBot**: Deep web intelligence.
-- **AnalystBot**: Data & strategy synthesis.
-- *...and 25+ more specialized agents.*
+### لماذا BIT؟
+1.  **تعدد الوكلاء (Multi-Agent System):** لا يعتمد النظام على نموذج واحد، بل على جيش من الوكلاء المتخصصين.
+2.  **دعم شامل للمزودين:** يدعم Google Gemini, OpenAI, Anthropic, xAI (Grok), DeepSeek, و OpenRouter.
+3.  **تكامل مع الأنظمة الخارجية:** جسور تواصل مباشرة مع WhatsApp, Telegram, و Email.
+4.  **قدرات رؤية وبحث متقدمة:** محرك بحث عميق (BIT-Search) وقدرات تحليل صور (Vision).
+5.  **أداء فائق:** تحسين المتغيرات والأوامر لتكون "BIT" سريعة كالبرق في التنفيذ.
 
 ---
-Built with ❤️ by **Mohamed Dev Labs**. **The future of AI is visual and autonomous.**
+
+## 🛠️ التقنيات المستخدمة (Tech Stack)
+
+تم اختيار التقنيات في هذا المشروع بعناية لضمان الاستقرار والأداء العالي:
+
+| التقنية | الوصف والاستخدام |
+| :--- | :--- |
+| **Node.js** | البيئة الأساسية لتشغيل النظام بكفاءة عالية ومعالجة غير متزامنة. |
+| **Commander.js** | لبناء واجهة أوامر (CLI) احترافية وسهلة الاستخدام. |
+| **Inquirer.js** | لتوفير واجهات تفاعلية أثناء إعداد النظام (Setup). |
+| **Chalk & Blessed** | لتصميم واجهة مستخدم رسومية داخل الطرفية (TUI) جذابة وملونة. |
+| **Puppeteer** | للتحكم في المتصفح وتصفح المواقع واستخراج البيانات بدقة. |
+| **Axios** | للتعامل مع طلبات الـ API والاتصال بالمزودين المختلفين. |
+| **Dotenv** | لإدارة متغيرات البيئة ومفاتيح الـ API بشكل آمن. |
+| **ROIC Integration** | دمج تقنية BIT Hyper Scan لفحص الأكواد وتحليل الثغرات. |
+
+---
+
+## 🤖 الروبوتات المتخصصة ومهامها (The Elite Squad)
+
+يحتوي نظام **BIT** على أكثر من 30 روبوت متخصص، إليك تفصيل لأهمهم:
+
+### 1. **CodexBot (المهندس الخارق)**
+*   **القوة التشغيلية:** 3.0x (الأسرع والأقوى).
+*   **المهمة:** هندسة البرمجيات الكاملة (Full-Stack)، تصميم قواعد البيانات، وبناء المعماريات المعقدة.
+*   **طريقة العمل:** يقوم بتحليل المهمة، تصميم الهيكل، ثم توزيع المهام الفرعية على الروبوتات الأخرى وتجميع النتائج في كود جاهز للإنتاج.
+
+### 2. **VisionBot (خبير الرؤية)**
+*   **المهمة:** تحليل الصور، التعرف على النصوص (OCR)، وفهم الأنماط البصرية بدقة 2x.
+*   **الاستخدام:** إرسال صورة وطلب شرحها أو استخراج بيانات منها.
+
+### 3. **SearchBot & BrowserBot (صيادو البيانات)**
+*   **المهمة:** البحث العميق في الويب (BIT-Search) وتصفح المواقع الديناميكية (SPAs).
+*   **الاستخدام:** جلب معلومات حديثة من الإنترنت لا تتوفر في تدريب النماذج التقليدي.
+
+### 4. **CodeGenerator & ReviewBot**
+*   **المهمة:** كتابة الأكواد بمختلف اللغات ومراجعتها أمنياً وتقنياً.
+*   **الاستخدام:** بناء وظائف برمجية محددة أو فحص كود موجود بحثاً عن أخطاء.
+
+### 5. **SecurityBot (الحارس الرقمي)**
+*   **المهمة:** تقييم الثغرات الأمنية واختبار الاختراق البرمجي.
+*   **الاستخدام:** فحص المشاريع قبل رفعها للتأكد من خلوها من الثغرات الحرجة.
+
+*(ملاحظة: هناك العديد من الروبوتات الأخرى مثل MathBot, LawBot, FinanceBot, و DesignBot، كل منها مخصص لمجال محدد).*
+
+---
+
+## ⚙️ كيفية التثبيت والاستخدام (Installation & Usage)
+
+### المتطلبات الأساسية
+*   Node.js (الإصدار 18 أو أحدث).
+*   حساب GitHub (لاستنساخ التبعيات مثل ROIC).
+*   مفاتيح API للمزودين الذين ترغب في استخدامهم.
+
+### خطوات التثبيت
+1.  قم باستنساخ المستودع:
+    ```bash
+    git clone https://github.com/mohamed-dev-labs/bit.git
+    cd bit
+    ```
+2.  تثبيت المكتبات:
+    ```bash
+    npm install
+    ```
+3.  إعداد النظام:
+    ```bash
+    bit setup
+    ```
+    *سيطلب منك النظام اختيار المزود، إدخال مفتاح الـ API، وتحديد ما إذا كنت تريد تثبيت نماذج محلية عبر Ollama.*
+
+### الأوامر المتاحة (Commands)
+
+| الأمر | الوصف |
+| :--- | :--- |
+| `bit setup` | تهيئة النظام، إعداد مفاتيح الـ API، وتثبيت ROIC. |
+| `bit gui` | تشغيل الواجهة الرسومية التفاعلية داخل الطرفية (TUI). |
+| `bit run "المهمة"` | تنفيذ مهمة مباشرة عبر سطر الأوامر. |
+| `bit setup-email` | إعداد جسر البريد الإلكتروني (Gmail). |
+| `bit email` | تشغيل بوت البريد الإلكتروني. |
+| `bit whatsapp` | تشغيل جسر واتساب. |
+| `bit telegram` | تشغيل جسر تليجرام. |
+
+---
+
+## 🌐 النماذج المدعومة (Supported Models)
+
+نظام **BIT** مصمم ليكون مرناً للغاية، حيث يدعم:
+*   **Google:** Gemini 1.5 Pro, Gemini 1.5 Flash.
+*   **OpenAI:** GPT-4o, GPT-4 Turbo, GPT-4.1 Mini.
+*   **Anthropic:** Claude 3.5 Sonnet, Claude 3 Opus.
+*   **xAI:** Grok-beta.
+*   **DeepSeek:** DeepSeek-V3, DeepSeek-Chat.
+*   **Local Models:** دعم كامل لـ Ollama (Llama 3, Mistral, Qwen, إلخ).
+
+---
+
+## 🛡️ بنية المشروع (Project Structure)
+
+```text
+bit/
+├── src/
+│   ├── agents/          # محركات الروبوتات (CodexBot, BaseAgent, إلخ)
+│   ├── tools/           # أدوات الاتصال (WhatsApp, Telegram, WebTool)
+│   ├── utils/           # إدارة الذاكرة، النماذج، والواجهة (TUI)
+│   └── cli.js           # ملف التشغيل الرئيسي والأوامر
+├── config/              # ملفات الإعدادات (تنشأ بعد setup)
+├── deps/                # التبعيات الخارجية مثل ROIC
+└── output/              # مخرجات العمليات (أكواد، ملفات، تقارير)
+```
+
+---
+
+## 📝 تفاصيل تقنية متقدمة للمطورين
+
+### نظام الذاكرة (Memory Management)
+يعتمد **BIT** على نظام إدارة ذاكرة ذكي يقوم بحفظ سياق المحادثات والمهام لكل روبوت على حدة، مما يسمح بالاستمرارية في المهام الطويلة والمعقدة دون فقدان المعلومات.
+
+### تكامل ROIC (BIT Hyper Scan)
+عند طلب مهام برمجية، يقوم النظام تلقائياً بتفعيل وحدة **ROIC** التي تقوم بعمل مسح شامل للكود المولد، والتأكد من مطابقته للمعايير العالمية، وتقديم تقرير أداء (Performance Report) يوضح نقاط القوة والضعف.
+
+### جسور التواصل (Bridges)
+تسمح الجسور بتحويل **BIT** من مجرد أداة محليه إلى خادم يعمل على مدار الساعة:
+*   **WhatsApp Bridge:** يتيح لك إرسال المهام عبر واتساب واستقبال النتائج كرسائل.
+*   **Telegram Bridge:** يوفر واجهة بوت تليجرام كاملة للتحكم في الوكلاء.
+*   **Email Bridge:** يسمح للنظام بقراءة رسائل البريد الإلكتروني الواردة، تحليلها، والرد عليها آلياً.
+
+---
+
+## 🤝 المساهمة (Contributing)
+
+نرحب دائماً بالمساهمات! إذا كنت ترغب في تطوير روبوت جديد أو تحسين أداء النظام، يرجى اتباع الخطوات التالية:
+1.  عمل Fork للمستودع.
+2.  إنشاء فرع جديد (Branch).
+3.  إرسال Pull Request مع شرح مفصل للتعديلات.
+
+---
+
+## 📜 الترخيص (License)
+
+هذا المشروع مرخص تحت رخصة **MIT**. جميع الحقوق محفوظة لـ **Mohamed Dev Labs**.
+
+---
+
+### تم التطوير بواسطة:
+**Mohamed Dev Labs** - رؤية جديدة لمستقبل الذكاء الاصطناعي.
+"BIT: Small Name, Infinite Power."
