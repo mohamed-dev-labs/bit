@@ -8,19 +8,66 @@ export class AgentCommander extends BaseAgent {
         this.robots = new Map();
         this.memory = new MemoryManager();
         this.name = "BIT AI Agent Commander (Slime Agent Edition)";
-        this.version = "V5.8 (The Multi-Provider & Vision Edition)";
-        this.contextSkill = "Adaptive Context Learning: Synthesizing long-term mission goals and user preferences from historical interactions (v5.8).";
+        this.version = "V5.9 (The Long-Term Memory & Skills Edition)";
+        this.contextSkill = "Adaptive Context Learning: Synthesizing long-term mission goals and user preferences from historical interactions (v5.9).";
+        this.learnedSkills = {}; // To store active learned skills in memory for quick access
     }
 
-    registerRobot(name, robotInstance) {
-        this.robots.set(name, robotInstance);
+    async learnFromConversations() {
+        console.log(chalk.yellow('[Memory] Analyzing past conversations to learn new skills...'));
+        const conversations = this.memory.recallConversations();
+        if (conversations.length === 0) {
+            console.log(chalk.gray('[Memory] No past conversations to learn from.'));
+            return;
+        }
+
+        // Use LLM to extract skills from conversations
+        const learningPrompt = `
+        Analyze the following past conversations and identify any recurring user preferences, successful strategies, common task patterns, or specific knowledge that can be formalized as a 'skill'.
+        A skill should be a concise, actionable piece of knowledge that helps the Commander or other agents perform better in future tasks.
+        Focus on patterns that appear across multiple conversations or particularly impactful outcomes.
+        
+        Conversations (last 10 entries for efficiency):
+        ${conversations.slice(-10).map(c => `Task: ${c.task}\nPlan: ${JSON.stringify(c.plan)}`).join('\n---\n')}
+        
+        Return a JSON object where keys are skill names (e.g., "EfficientCodeGeneration", "UserPreferenceForMarkdown") and values are detailed descriptions of the skill, including how it should be applied.
+        If no new skills are identified, return an empty JSON object.
+        Return ONLY valid JSON.
+        `;
+
+        try {
+            const skillResponse = await this.chat(learningPrompt);
+            const newSkills = JSON.parse(skillResponse.replace(/```json|```/g, '').trim());
+
+            for (const skillName in newSkills) {
+                if (Object.prototype.hasOwnProperty.call(newSkills, skillName)) {
+                    const skillDefinition = newSkills[skillName];
+                    this.memory.learnSkill(skillName, skillDefinition);
+                    this.learnedSkills[skillName] = skillDefinition; // Update in-memory cache
+                    console.log(chalk.green(`[Memory] Learned new skill: ${skillName}`));
+                }
+            }
+        } catch (error) {
+            console.error(chalk.red(`[Memory] Error learning skills from conversations: ${error.message}`));
+        }
+    }
+
+    // Method to load all skills from memory at startup or when needed
+    async loadSkills() {
+        console.log(chalk.yellow('[Memory] Loading all learned skills...'));
+        this.learnedSkills = this.memory.recallAllSkills();
+        console.log(chalk.gray(`[Memory] Loaded ${Object.keys(this.learnedSkills).length} skills.`));
+    }
+
+    registerRobot(name, robotInstance) {        this.robots.set(name, robotInstance);
     }
 
     async delegateTask(taskDescription) {
         console.log(chalk.bold.green(`\n[${this.name}] [${this.version}]`));
         console.log(chalk.gray(`[Commander Skill] ${this.contextSkill}`));
-        
-        const pastContext = this.memory.recall().slice(-5).map(c => c.task).join(' | ');
+               await this.loadSkills(); // Load skills at the beginning of each delegation
+        const pastContext = this.memory.recallConversations().slice(-5).map(c => c.task).join(' | ');
+        const activeSkills = Object.keys(this.learnedSkills).map(name => `${name}: ${this.learnedSkills[name]}`).join('\n');
         if (pastContext) {
             console.log(chalk.gray(`[Memory Recall] Context found: ${pastContext.substring(0, 100)}...`));
         }
@@ -29,7 +76,7 @@ export class AgentCommander extends BaseAgent {
         
         const planningPrompt = `
         You are the Strategic Commander (Slime Agent).
-        Current Skill: ${this.contextSkill}
+        Current Skill: ${this.contextSkill}\n        Learned Skills: ${activeSkills || 'None'}
         Mission Goal: "${taskDescription}"
         Past Context: ${pastContext}
         Available Sub-Agents: ${Array.from(this.robots.keys()).join(', ')}.
@@ -58,8 +105,9 @@ export class AgentCommander extends BaseAgent {
             console.log(chalk.blue(`[Commander Reasoning] ${plan.reasoning}`));
             console.log(chalk.magenta(`[Workflow Map] ${plan.steps.length} stages identified.`));
 
-            this.memory.save({ task: taskDescription, plan: plan.steps });
-            
+            this.memory.saveConversation({ task: taskDescription, plan: plan.steps });
+            await this.learnFromConversations(); // Trigger skill learning after each mission
+                       
             let finalResults = [];
             for (const step of plan.steps) {
                 const robot = this.robots.get(step.agent);

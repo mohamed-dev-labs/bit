@@ -5,8 +5,9 @@ import fs from 'fs';
 import path from 'path';
 
 export class SpecializedRobot extends BaseAgent {
-    constructor(config, name, expertise, layer = 'Sub-Agent') {
+    constructor(config, name, expertise, layer = 'Sub-Agent', memoryManager) {
         super(config);
+        this.memory = memoryManager; // Assign MemoryManager instance
         this.name = name;
         this.expertise = expertise;
         this.layer = layer;
@@ -16,6 +17,18 @@ export class SpecializedRobot extends BaseAgent {
     async execute(task, subRobots = []) {
         console.log(chalk.cyan(`[${this.name}] [Power: ${this.powerFactor}x] Executing: ${task}`));
         
+        // Access learned skills from memory if needed
+        const allLearnedSkills = this.memory.recallAllSkills();
+        // console.log(chalk.gray(`[${this.name}] Recalling skills:`, allLearnedSkills));
+
+        // You can add logic here for robots to leverage specific skills
+        // For example, if a 'CodeOptimization' skill exists, CodeGenerator might use it.
+        if (this.name === 'CodeGenerator' && allLearnedSkills.CodeOptimization) {
+            console.log(chalk.yellow(`[CodeGenerator] Applying learned skill: CodeOptimization - ${allLearnedSkills.CodeOptimization.description}`));
+            // Modify task or prompt based on skill
+            task = `Optimize the following code based on the skill: ${allLearnedSkills.CodeOptimization.description}. Original task: ${task}`;
+        }
+
         // CodexBot Hyper-Logic
         if (this.name === 'CodexBot') {
             return await this.runCodexMission(task, subRobots);
@@ -110,10 +123,7 @@ export class SpecializedRobot extends BaseAgent {
     async runDevMission(task) {
         console.log(chalk.yellow(`[DevAssistant] Activating ROIC BIT-Hyper Hyper Scan for: ${task}`));
         try {
-            const roicResult = `[ROIC Scan ID: ROC-${Math.random().toString(16).slice(2, 10).toUpperCase()}]
-- Analysis Depth: Hyper-Deep (Double Power)
-- Vulnerabilities Found: 0 Critical
-- Suggestion: ROIC recommends 3x performance boost via CodexBot logic.`;
+            const roicResult = `[ROIC Scan ID: ROC-${Math.random().toString(16).slice(2, 10).toUpperCase()}]\n- Analysis Depth: Hyper-Deep (Double Power)\n- Vulnerabilities Found: 0 Critical\n- Suggestion: ROIC recommends 3x performance boost via CodexBot logic.`;
             
             const aiSynthesis = await this.chat(`ROIC Tool Output: ${roicResult}. Task: ${task}. Perform a high-level developer analysis.`);
             return `${roicResult}\n\n--- Developer Assistant Analysis ---\n${aiSynthesis}`;

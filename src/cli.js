@@ -19,8 +19,8 @@ const EMAIL_CONFIG_PATH = path.join(process.cwd(), 'config', 'email-config.json'
 
 program
     .name('bit')
-    .description('BIT AI Agent Commander (Slime Agent Edition) v5.8')
-    .version('5.8.0');
+    .description('BIT AI Agent Commander (Slime Agent Edition) v5.9')
+    .version('5.9.0');
 
 async function installROIC() {
     console.log(chalk.yellow('\n[Dependency] Installing ROIC (BIT-Hyper Hyper Edition) as a default dependency...'));
@@ -43,7 +43,7 @@ program
     .command('setup')
     .description('Initialize Commander, Local Models, ROIC, and API Keys')
     .action(async () => {
-        console.log(chalk.bold.blue('\n--- BIT Robots v5.8.0 Setup ---'));
+        console.log(chalk.bold.blue('\n--- BIT Robots v5.9.0 Setup ---'));
         await installROIC();
 
         const answers = await inquirer.prompt([
@@ -150,7 +150,7 @@ program
         const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
         const commander = new AgentCommander(config);
         ROBOT_DEFINITIONS.forEach(def => {
-            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
+            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer, commander.memory));
         });
         const gui = new TUI(config, commander);
         gui.render();
@@ -169,7 +169,7 @@ program
         const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
         const commander = new AgentCommander(config);
         ROBOT_DEFINITIONS.forEach(def => {
-            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
+            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer, commander.memory));
         });
         console.log(chalk.blue(`\n🚀 Deploying Mission: ${task}`));
         try {
@@ -189,7 +189,7 @@ program
         const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
         const commander = new AgentCommander(config);
         ROBOT_DEFINITIONS.forEach(def => {
-            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
+            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer, commander.memory));
         });
         const bridge = new WhatsAppBridge(commander);
         await bridge.init();
@@ -203,7 +203,7 @@ program
         const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
         const commander = new AgentCommander(config);
         ROBOT_DEFINITIONS.forEach(def => {
-            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
+            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer, commander.memory));
         });
         const bridge = new TelegramBridge(commander, token);
         bridge.init();
@@ -222,7 +222,7 @@ program
         
         const commander = new AgentCommander(config);
         ROBOT_DEFINITIONS.forEach(def => {
-            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer));
+            commander.registerRobot(def.name, new SpecializedRobot(config, def.name, def.expertise, def.layer, commander.memory));
         });
 
         const bridge = new EmailBridge(commander, emailConfig);
