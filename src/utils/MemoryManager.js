@@ -68,4 +68,50 @@ export class MemoryManager {
         const data = JSON.parse(fs.readFileSync(this.memoryPath, 'utf-8'));
         return data.skills;
     }
+
+    // Builds a natural network context from conversations and skills for deeper understanding
+    buildNaturalNetworkContext(currentTask) {
+        const data = JSON.parse(fs.readFileSync(this.memoryPath, 'utf-8'));
+        const conversations = data.conversations;
+        const skills = data.skills;
+        const knowledgeBase = data.knowledge_base;
+
+        let context = {
+            relevantConversations: [],
+            relevantSkills: [],
+            relevantKnowledge: []
+        };
+
+        // Simple keyword matching for now, can be enhanced with embedding/vector search later
+        const keywords = currentTask.toLowerCase().split(/\s+/).filter(word => word.length > 2);
+
+        // Find relevant conversations
+        conversations.forEach(conv => {
+            if (keywords.some(keyword => conv.task.toLowerCase().includes(keyword) || JSON.stringify(conv.plan).toLowerCase().includes(keyword))) {
+                context.relevantConversations.push(conv);
+            }
+        });
+
+        // Find relevant skills
+        for (const skillName in skills) {
+            if (Object.prototype.hasOwnProperty.call(skills, skillName)) {
+                const skill = skills[skillName];
+                if (keywords.some(keyword => skillName.toLowerCase().includes(keyword) || skill.description.toLowerCase().includes(keyword))) {
+                    context.relevantSkills.push({ name: skillName, ...skill });
+                }
+            }
+        }
+
+        // Find relevant knowledge base entries
+        for (const kbKey in knowledgeBase) {
+            if (Object.prototype.hasOwnProperty.call(knowledgeBase, kbKey)) {
+                const kbEntry = knowledgeBase[kbKey];
+                if (keywords.some(keyword => kbKey.toLowerCase().includes(keyword) || JSON.stringify(kbEntry).toLowerCase().includes(keyword))) {
+                    context.relevantKnowledge.push({ key: kbKey, value: kbEntry });
+                }
+            }
+        }
+
+        return context;
+    }
 }

@@ -120,7 +120,7 @@ export class EmailBridge {
                         <pre style="white-space: pre-wrap;">${report}</pre>
                     </div>
                     <p style="font-size: 0.8em; color: #888; margin-top: 20px;">
-                        Sent automatically by BIT Agent Commander v5.8
+                        Sent automatically by BIT Agent Commander v5.9
                     </p>
                 </div>
             `

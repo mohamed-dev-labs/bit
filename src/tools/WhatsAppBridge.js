@@ -41,12 +41,12 @@ export class WhatsAppBridge {
             console.log(chalk.green(`\n✅ WhatsApp Bridge is ONLINE for ${phoneNumber}!`));
         });
 
-        this.client.on('message', async (msg) => {
-            if (msg.body.toLowerCase().startsWith('run deep inspire')) {
-                const task = msg.body.replace(/run deep inspire/i, '').trim();
+        this.client.on(\'message\', async (msg) => {
+            if (msg.body.toLowerCase().startsWith(\'run bit\')) {
+                const task = msg.body.replace(/run bit/i, \'\').trim();
                 console.log(chalk.magenta(`[WhatsApp] Received Task: ${task}`));
                 
-                msg.reply('🤖 BIT (Slime Agent) is processing your request...');
+                msg.reply(\'🤖 BIT (Slime Agent) is processing your request...\');
                 try {
                     const result = await this.commander.delegateTask(task);
                     msg.reply(`✅ Mission Report:\n\n${result}`);

@@ -19,8 +19,8 @@ const EMAIL_CONFIG_PATH = path.join(process.cwd(), 'config', 'email-config.json'
 
 program
     .name('bit')
-    .description('BIT AI Agent Commander (Slime Agent Edition) v5.9')
-    .version('5.9.0');
+    .description("BIT AI Agent Commander (Slime Agent Edition) v6.0 (The Natural Network & Autonomous Agent Edition)")
+    .version("6.0.0");
 
 async function installROIC() {
     console.log(chalk.yellow('\n[Dependency] Installing ROIC (BIT-Hyper Hyper Edition) as a default dependency...'));
@@ -43,7 +43,7 @@ program
     .command('setup')
     .description('Initialize Commander, Local Models, ROIC, and API Keys')
     .action(async () => {
-        console.log(chalk.bold.blue('\n--- BIT Robots v5.9.0 Setup ---'));
+        console.log(chalk.bold.blue("\n--- BIT Robots v6.0.0 Setup ---"));
         await installROIC();
 
         const answers = await inquirer.prompt([

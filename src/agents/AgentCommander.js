@@ -1,5 +1,7 @@
 import { BaseAgent } from './BaseAgent.js';
 import chalk from 'chalk';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 import { MemoryManager } from '../utils/MemoryManager.js';
 
 export class AgentCommander extends BaseAgent {
@@ -59,13 +61,40 @@ export class AgentCommander extends BaseAgent {
         console.log(chalk.gray(`[Memory] Loaded ${Object.keys(this.learnedSkills).length} skills.`));
     }
 
-    registerRobot(name, robotInstance) {        this.robots.set(name, robotInstance);
+    registerRobot(name, robotInstance) {
+        this.robots.set(name, robotInstance);
+    }
+
+    async ensureTools(requiredTools) {
+        console.log(chalk.yellow(\"[Tooling] Checking for required tools...\"));
+        const missingTools = requiredTools.filter(tool => {
+            try {
+                require.resolve(tool);
+                return false;
+            } catch (e) {
+                return true;
+            }
+        });
+
+        if (missingTools.length > 0) {
+            console.log(chalk.cyan(`[Tooling] Installing missing tools: ${missingTools.join(\", \_)}`));
+            try {
+                const { execSync } = require(\"child_process\");
+                execSync(`npm install ${missingTools.join(\" \")}`, { stdio: \"inherit\" });
+                console.log(chalk.green(\"[Tooling] All required tools are now installed.\"));
+            } catch (error) {
+                console.error(chalk.red(`[Tooling] Failed to install tools: ${error.message}`));
+                throw new Error(`Failed to install required tools: ${missingTools.join(\", \_)}`);
+            }
+        }
     }
 
     async delegateTask(taskDescription) {
         console.log(chalk.bold.green(`\n[${this.name}] [${this.version}]`));
         console.log(chalk.gray(`[Commander Skill] ${this.contextSkill}`));
-               await this.loadSkills(); // Load skills at the beginning of each delegation
+        await this.loadSkills(); // Load skills at the beginning of each delegation
+        // Example: Ensure a tool is available if the task requires it
+        // await this.ensureTools(["some-npm-package"]);
         const pastContext = this.memory.recallConversations().slice(-5).map(c => c.task).join(' | ');
         const activeSkills = Object.keys(this.learnedSkills).map(name => `${name}: ${this.learnedSkills[name]}`).join('\n');
         if (pastContext) {
@@ -73,12 +102,15 @@ export class AgentCommander extends BaseAgent {
         }
 
         console.log(chalk.cyan(`[Thinking Architecture] Analyzing Mission: "${taskDescription}"`));
+        const naturalNetworkContext = this.memory.buildNaturalNetworkContext(taskDescription);
+        console.log(chalk.gray(`[Natural Network] Context built: ${JSON.stringify(naturalNetworkContext).substring(0, 100)}...`));
         
         const planningPrompt = `
         You are the Strategic Commander (Slime Agent).
         Current Skill: ${this.contextSkill}\n        Learned Skills: ${activeSkills || 'None'}
         Mission Goal: "${taskDescription}"
         Past Context: ${pastContext}
+        Natural Network Context: ${JSON.stringify(naturalNetworkContext)}
         Available Sub-Agents: ${Array.from(this.robots.keys()).join(', ')}.
         
         Goal: If the task is coding-related, use "CodexBot" (3x Power). 
